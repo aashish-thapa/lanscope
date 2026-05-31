@@ -1,0 +1,34 @@
+# lanscope — eBPF passive IoT fingerprinting & anomaly detection
+#
+# Workspace layout:
+#   lanscope-common  shared POD types (no_std-compatible, used by kernel + userspace)
+#   lanscope         userspace binary (CLI/TUI, capture pipeline, fingerprint, anomaly)
+#   xtask            build orchestration for the eBPF crate
+#
+# `lanscope-ebpf` is intentionally NOT a workspace member: it targets
+# `bpfel-unknown-none` and requires bpf-linker + nightly build-std. It is built
+# out-of-band by `cargo xtask build-ebpf` so the userspace workspace stays
+# buildable on stable Rust without the eBPF toolchain installed.
+[workspace]
+resolver = "2"
+members = ["lanscope-common", "lanscope", "xtask"]
+exclude = ["lanscope-ebpf"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/arroyodev/lanscope"
+rust-version = "1.85"
+
+[workspace.dependencies]
+lanscope-common = { path = "lanscope-common" }
+anyhow = "1"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

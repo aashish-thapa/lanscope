@@ -1,0 +1,21 @@
+[package]
+name = "lanscope-common"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+# Shared POD types for the kernel<->userspace boundary.
+# Default is no_std so the eBPF crate can depend on it; the `user` feature
+# pulls in std-only conveniences (Display, std derives) for userspace.
+[features]
+default = []
+# std-only conveniences for userspace.
+user = []
+# Implement `aya::Pod` for the shared types so they can be eBPF map keys/values
+# in userspace. Only enabled when building the agent with `--features ebpf`, so
+# stock builds never pull in aya.
+aya-pod = ["dep:aya"]
+
+[dependencies]
+aya = { version = "0.13", optional = true, default-features = false }

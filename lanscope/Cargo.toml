@@ -1,0 +1,55 @@
+[package]
+name = "lanscope"
+description = "Passive eBPF-powered IoT device fingerprinting & anomaly detection for your LAN"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+default-run = "lanscope"
+
+[features]
+# Core is buildable on stable Rust with no eBPF/ML toolchain.
+default = []
+# `ebpf` slots the aya-based kernel capture backend in behind CaptureBackend.
+# Requires bpf-linker + nightly; the build script compiles lanscope-ebpf.
+ebpf = ["dep:aya", "lanscope-common/aya-pod"]
+# `ml` enables the ONNX inference anomaly scorer via onnxruntime (native dep).
+ml = ["dep:ort", "dep:ndarray"]
+
+[dependencies]
+lanscope-common = { workspace = true, features = ["user"] }
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+clap = { version = "4", features = ["derive"] }
+ratatui = "0.29"
+crossterm = "0.28"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "sync", "time", "net"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+etherparse = "0.16"
+time = { version = "0.3", features = ["formatting", "macros"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+metrics = "0.24"
+metrics-exporter-prometheus = { version = "0.16", default-features = false, features = ["http-listener"] }
+
+# --- feature: ebpf ---
+aya = { version = "0.13", optional = true }
+
+# --- feature: ml ---
+ort = { version = "2.0.0-rc.10", optional = true }
+ndarray = { version = "0.16", optional = true }
+
+[dev-dependencies]
+tempfile = "3"
+
+[lib]
+name = "lanscope"
+path = "src/lib.rs"
+
+[[bin]]
+name = "lanscope"
+path = "src/main.rs"

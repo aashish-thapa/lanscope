@@ -1,0 +1,10 @@
+/target
+**/*.rs.bk
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-*
+.DS_Store
+/lanscope-ebpf/target
+__pycache__/
+*.pyc
