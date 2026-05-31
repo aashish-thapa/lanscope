@@ -1,0 +1,39 @@
+[package]
+name = "lanscope-ebpf"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+publish = false
+
+# This crate targets bpfel-unknown-none and is built out-of-band (by the
+# userspace build.rs via aya-build, or `cargo xtask build-ebpf`). It is excluded
+# from the root workspace so a normal `cargo build` never tries to host-compile it.
+
+[dependencies]
+aya-ebpf = "0.1"
+# no_std build of the shared POD types (no `user` feature → no aya/std).
+lanscope-common = { path = "../lanscope-common" }
+
+[[bin]]
+name = "lanscope"
+path = "src/main.rs"
+
+# eBPF requires optimisation for the verifier to accept the bytecode.
+[profile.dev]
+opt-level = 3
+debug = false
+panic = "abort"
+overflow-checks = false
+# Disable debug assertions: they insert misaligned-pointer-deref / panic checks
+# on our raw packet reads, which pull non-terminating cold blocks into the
+# program and make the eBPF verifier reject it ("last insn is not exit or jmp").
+debug-assertions = false
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"
+overflow-checks = false
+codegen-units = 1
+
+[workspace]

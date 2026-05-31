@@ -1,0 +1,4 @@
+# The eBPF crate is built with nightly (`-Z build-std=core`) and bpf-linker.
+[toolchain]
+channel = "nightly"
+components = ["rust-src"]
