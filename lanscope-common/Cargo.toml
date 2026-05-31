@@ -1,8 +1,10 @@
 [package]
 name = "lanscope-common"
+description = "Shared kernel/userspace POD types for lanscope"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+repository.workspace = true
 rust-version.workspace = true
 
 # Shared POD types for the kernel<->userspace boundary.

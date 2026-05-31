@@ -1,6 +1,13 @@
-# lanscope
+<div align="center">
+  <h1>lanscope</h1>
+  <p>Passive eBPF-powered IoT device fingerprinting &amp; anomaly detection for your LAN.</p>
 
-**Passive eBPF-powered IoT device fingerprinting & anomaly detection for your LAN.**
+  [![CI](https://github.com/aashish-thapa/lanscope/actions/workflows/ci.yaml/badge.svg)](https://github.com/aashish-thapa/lanscope/actions/workflows/ci.yaml)
+  [![Crates.io](https://img.shields.io/crates/v/lanscope.svg)](https://crates.io/crates/lanscope)
+  [![AUR](https://img.shields.io/aur/version/lanscope-bin.svg)](https://aur.archlinux.org/packages/lanscope-bin)
+  [![Downloads](https://img.shields.io/crates/d/lanscope.svg)](https://crates.io/crates/lanscope)
+  [![License](https://img.shields.io/crates/l/lanscope.svg)](#license)
+</div>
 
 `lanscope` watches your network, figures out *what* every device is (vendor, type,
 hostname, services) from the metadata it leaks — ARP, DHCP, mDNS/Bonjour, SSDP/UPnP —
@@ -8,9 +15,8 @@ and flags devices behaving anomalously. The high-performance capture path is bui
 the kernel with **eBPF** (via [aya](https://aya-rs.dev), Rust-native eBPF); everything
 else is safe userspace Rust with a Ratatui TUI.
 
-> **Status:** early. M0 (skeleton) and M1 (passive discovery + device registry) are
-> implemented and tested. The eBPF capture backend, fingerprint engine, anomaly
-> heuristics, TUI, Prometheus exporter, and ONNX model are on the roadmap below.
+> 📖 **Docs:** [ARCHITECTURE.md](ARCHITECTURE.md) — design, module map, capture modes, and
+> the eBPF verifier lessons · [ml/README.md](ml/README.md) — the IoT-23 → ONNX pipeline.
 
 ---
 
