@@ -315,7 +315,7 @@ fn warn_on_visibility(mode: CaptureMode) {
 fn cmd_list(json: bool, db: Option<PathBuf>) -> Result<()> {
     let store = open_store(db)?;
     let mut devices = store.load_devices()?;
-    devices.sort_by(|a, b| b.last_seen.cmp(&a.last_seen));
+    devices.sort_by_key(|d| std::cmp::Reverse(d.last_seen));
 
     if json {
         println!(

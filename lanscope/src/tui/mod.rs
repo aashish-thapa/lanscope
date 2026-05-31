@@ -49,7 +49,7 @@ impl Dashboard {
 
     /// Replace the device list (sorted most-recently-seen first).
     pub fn set_devices(&mut self, mut devices: Vec<Device>) {
-        devices.sort_by(|a, b| b.last_seen.cmp(&a.last_seen));
+        devices.sort_by_key(|d| std::cmp::Reverse(d.last_seen));
         self.devices = devices;
     }
 
