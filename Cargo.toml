@@ -22,7 +22,7 @@ repository = "https://github.com/aashish-thapa/lanscope"
 rust-version = "1.85"
 
 [workspace.dependencies]
-lanscope-common = { path = "lanscope-common" }
+lanscope-common = { path = "lanscope-common", version = "0.1.0" }
 anyhow = "1"
 thiserror = "2"
 tracing = "0.1"
