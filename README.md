@@ -15,8 +15,38 @@ and flags devices behaving anomalously. The high-performance capture path is bui
 the kernel with **eBPF** (via [aya](https://aya-rs.dev), Rust-native eBPF); everything
 else is safe userspace Rust with a Ratatui TUI.
 
-> 📖 **Docs:** [ARCHITECTURE.md](ARCHITECTURE.md) — design, module map, capture modes, and
-> the eBPF verifier lessons · [ml/README.md](ml/README.md) — the IoT-23 → ONNX pipeline.
+> 📖 **Docs:** [ARCHITECTURE.md](https://github.com/aashish-thapa/lanscope/blob/main/ARCHITECTURE.md)
+> — design, module map, capture modes, and the eBPF verifier lessons ·
+> [ml/README.md](https://github.com/aashish-thapa/lanscope/blob/main/ml/README.md) — the
+> IoT-23 → ONNX pipeline.
+
+---
+
+## Install
+
+```sh
+# crates.io — builds the userspace agent from source
+cargo install lanscope
+
+# Arch Linux (AUR) — prebuilt static binary
+paru -S lanscope-bin        # or: yay -S lanscope-bin
+
+# Prebuilt static binary, any x86_64 / aarch64 Linux (no deps)
+curl -L https://github.com/aashish-thapa/lanscope/releases/latest/download/lanscope-x86_64-unknown-linux-musl -o lanscope
+chmod +x lanscope && sudo install -m755 lanscope /usr/local/bin/lanscope
+```
+
+Then:
+
+```sh
+lanscope run --mode host    # live TUI: discover & fingerprint devices on your LAN
+lanscope list               # one-shot device table
+lanscope alerts             # recent anomalies
+```
+
+> These ship the **userspace agent** (discovery + host-mode capture). The in-kernel
+> **eBPF** backend for whole-LAN flow analysis (gateway/SPAN) needs a from-source build
+> with the eBPF toolchain — see [Build from source](#build-from-source).
 
 ---
 
@@ -67,7 +97,7 @@ Everything hangs off trait seams so each stage is swappable and unit-testable:
 
 ---
 
-## Build & run
+## Build from source
 
 The userspace tool builds on **stable Rust**, no special toolchain:
 
